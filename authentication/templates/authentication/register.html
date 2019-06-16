@@ -1,0 +1,106 @@
+{% extends 'authentication/base.html' %} {% block title %}
+<title>Register | Library</title>
+{% endblock %} {% block content %}
+<h2>Register For A New Account</h2>
+<div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <span class="input-group-text">@</span>
+  </div>
+  <input
+    type="text"
+    class="form-control"
+    placeholder="Username"
+    id="username"
+    name="username"
+  />
+</div>
+<div class="input-group mb-3">
+  <input
+    type="text"
+    class="form-control"
+    placeholder="First Name"
+    id="first_name"
+    name="first_name"
+  />
+</div>
+<div class="input-group mb-3">
+  <input
+    type="text"
+    class="form-control"
+    placeholder="Last Name"
+    id="last_name"
+    name="last_name"
+  />
+</div>
+<div class="input-group mb-3">
+  <input
+    type="password"
+    class="form-control"
+    placeholder="Password"
+    id="password"
+    name="password"
+  />
+</div>
+<div class="input-group mb-3">
+  <input
+    type="password"
+    class="form-control"
+    placeholder="Password Again"
+    id="re_password"
+    name="re_password"
+  />
+</div>
+<div class="input-group mb-3">
+  <input type="submit" class="form-control" id="btn" value="Register" />
+</div>
+
+{% if user.is_authenticated %}
+<script>
+  document.location = "/";
+</script>
+{% endif %}
+<script>
+  $("#btn").click(function() {
+    username = document.getElementById("username").value;
+    first_name = document.getElementById("first_name").value;
+    last_name = document.getElementById("last_name").value;
+    password = document.getElementById("password").value;
+    re_password = document.getElementById("re_password").value;
+    if (
+      username === "" ||
+      first_name === "" ||
+      last_name === "" ||
+      password === "" ||
+      re_password === ""
+    ) {
+      alert("Please Fill Out All The Fields");
+    } else {
+      if (password != re_password) {
+        alert("Passwords Do Not Match");
+      } else {
+        $.ajax({
+          url: "{% url 'register-logic' %}",
+          method: "POST",
+          data: {
+            username: username,
+            first_name: first_name,
+            last_name: last_name,
+            password: password
+          },
+          success: function(data, status, xhr) {
+            if (data["message"] == 1) {
+              alert("Account Successfully Created");
+              document.location = "/";
+            } else {
+              alert("Unable to Create Your Account");
+            }
+          },
+          error: function(xhr, status, err) {
+            alert("Some error occured");
+          }
+        });
+      }
+    }
+  });
+</script>
+{% endblock %}

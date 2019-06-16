@@ -20,8 +20,16 @@
     <dd>Rs.{{book.mrp}}</dd>
     <dt>Available Copies:</dt>
     <dd>{{num_available}}</dd>
+    {% if user.is_authenticated %}
+    <dt>Rate {{book.title}}</dt>
+ 	<form >
+	  <input type="number" name="rating" id="rating" min="0" max="10">
+	  <input type="submit" id="rate-button">
+	</form>
+	
 </dl>
-<button class="btn btn-primary" id="loan-button">Loan {{book.title}}</button>
+
+<button class="btn btn-primary" id="loan-button">Loan {{book.title}}</button>{% endif %}
 <script>
 $("#loan-button").click(function(){
     $.ajax({
@@ -45,5 +53,39 @@ $("#loan-button").click(function(){
 
 	})
 })
+</script>
+<script>
+$("#rate-button").click(function(){
+    var rating = document.getElementById("rating").value;
+    
+    if(rating<=10){
+    $.ajax({
+		url:"{% url 'rate-book' %}",
+		method:"POST",
+		data:{
+			bid: {{book.id}},
+			rating: rating
+		},
+		success:function(data,status,xhr){
+			if(data['message']==1){
+                alert("Book successfully rated");
+                window.location.replace("/books");
+			}
+			else{
+				alert("Unable to rate this book");
+			}
+		},
+		error:function(xhr,status,err){
+			alert("Some error occured");
+		}
+
+	})
+}else alert("Enter a number between 1 to 10");}
+
+)
+
+
+
+
 </script>
 {% endblock %}

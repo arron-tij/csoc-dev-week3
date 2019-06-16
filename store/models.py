@@ -8,6 +8,8 @@ class Book(models.Model):
     description=models.TextField(null=True)
     mrp=models.PositiveIntegerField()
     rating=models.FloatField(default=0.0)
+    total_rating = models.IntegerField(default=0)
+    total_users = models.IntegerField(default=0)
     class Meta:
         ordering=('title',)
     def __str__(self):
@@ -19,6 +21,8 @@ class BookCopy(models.Model):
     # 1 means available for issue, 0 means not
     status=models.BooleanField(default=False)
     borrower=models.ForeignKey(User,related_name='borrower',null=True,on_delete=models.SET_NULL)
+    class Meta:
+        verbose_name_plural= "BookCopies"
     def __str__(self):
         return f'{self.book.title} , {str(self.borrow_date)}'
 

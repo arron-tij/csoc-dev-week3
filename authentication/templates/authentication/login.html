@@ -1,0 +1,75 @@
+{% extends 'authentication/base.html' %} {% block title %}
+<title>Login | Library</title>
+{% endblock %} {% block content %}
+<h2>Enter Your Credentials</h2>
+<div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <span class="input-group-text">@</span>
+  </div>
+  <input
+    type="text"
+    class="form-control"
+    placeholder="Username"
+    id="username"
+    name="username"
+  />
+</div>
+
+<div class="input-group mb-3">
+  <input
+    type="password"
+    class="form-control"
+    placeholder="Password"
+    id="password"
+    name="password"
+  />
+</div>
+
+<div class="input-group mb-3">
+  <input type="submit" class="form-control" id="btn" value="Register" />
+</div>
+
+{% if user.is_authenticated %}
+<script>
+  document.location = "/";
+</script>
+{% endif %}
+<script>
+  $("#btn").click(function() {
+    username = document.getElementById("username").value;
+    
+    password = document.getElementById("password").value;
+   
+    if (
+      username === "" ||
+     
+      password === "" 
+      
+    ) {
+      alert("Please Fill Out All The Fields");
+    } else {
+      
+        $.ajax({
+          url: "{% url 'login-logic' %}",
+          method: "POST",
+          data: {
+            username: username,
+            password: password
+          },
+          success: function(data, status, xhr) {
+            if (data["message"] == 1) {
+              alert("Logged In");
+              document.location = "/";
+            } else {
+              alert("Invalid Credentials");
+            }
+          },
+          error: function(xhr, status, err) {
+            alert("Some error occured");
+          }
+        });
+      
+    }
+  });
+</script>
+{% endblock %}
