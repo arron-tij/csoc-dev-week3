@@ -7,9 +7,9 @@ class Book(models.Model):
     genre=models.CharField(max_length=50)
     description=models.TextField(null=True)
     mrp=models.PositiveIntegerField()
-    rating=models.FloatField(default=0.0)
-    total_rating = models.IntegerField(default=0)
-    total_users = models.IntegerField(default=0)
+    rating=models.FloatField(default=0.0,null=True)
+    total_rating = models.IntegerField(default=0,null=True)
+    total_users = models.IntegerField(default=0,null=True)
     class Meta:
         ordering=('title',)
     def __str__(self):
