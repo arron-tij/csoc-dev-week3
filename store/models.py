@@ -17,12 +17,21 @@ class Book(models.Model):
 
 class BookCopy(models.Model):
     book=models.ForeignKey(Book,on_delete=models.CASCADE)
-    borrow_date=models.DateField(null=True)
+    borrow_date=models.DateField(null=True,blank=True)
     # 1 means available for issue, 0 means not
     status=models.BooleanField(default=False)
-    borrower=models.ForeignKey(User,related_name='borrower',null=True,on_delete=models.SET_NULL)
+    borrower=models.ForeignKey(User,related_name='borrower',null=True,blank=True,on_delete=models.SET_NULL)
     class Meta:
         verbose_name_plural= "BookCopies"
     def __str__(self):
         return f'{self.book.title} , {str(self.borrow_date)}'
+
+
+class PastRating(models.Model): 
+    book=models.ForeignKey(Book,on_delete=models.CASCADE)
+    customer=models.ForeignKey(User,related_name='customer',null=True,on_delete=models.SET_NULL)
+    rating=models.FloatField(default=0.0,null=True)
+
+    def __str__(self):
+        return f'{self.rating}'
 

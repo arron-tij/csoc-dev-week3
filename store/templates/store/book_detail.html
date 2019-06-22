@@ -21,7 +21,7 @@
     <dt>Available Copies:</dt>
     <dd>{{num_available}}</dd>
     {% if user.is_authenticated %}
-    <dt>Rate {{book.title}}</dt>
+    <dt>Rate {{book.title}}:Your previous rating was {{pr}}</dt>
  	<form >
 	  <input type="number" name="rating" id="rating" min="0" max="10">
 	  <input type="submit" id="rate-button">
